@@ -43,10 +43,11 @@ while(outlierFlag)
         x = sortrows(x,{'Participant','Contents','Codecs','Bitrates'});
         y = sortrows(y,{'Contents','Codecs','Bitrates'});
         r2_coeff=corrcoef(x.Scores,y.mean_Scores);
+        %XXX_Shishir Debug
         if isnan(r2_coeff(1,2))
             test = r2_coeff;
             test2 = x.Scores;
-            test3 = y.mean_
+            test3 = y.mean_Scores;
             disp('FoundNan');
         end
         participantR2Coeffs{participant,1}=r2_coeff(1,2);
@@ -56,6 +57,12 @@ while(outlierFlag)
        tr1 = r1 - participantR1Coeffs{:,1} ;
        tr2 = r2 - participantR2Coeffs{:,1} ;
        participantOutlierScores = (tr1 + tr2)/2;
+       outlier = find(participantOutlierScores==max(participantOutlierScores));
+       outlierParticipant = participantList(outlier,1);
+       %Remove participant from dataset
+       participantList(outlier,1)=[];
+       rows = stimuliScores.Participant == 
+       
     else
         outlierFlag=false;
     end

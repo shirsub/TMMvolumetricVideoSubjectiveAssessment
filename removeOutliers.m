@@ -57,9 +57,19 @@ while(outlierFlag)
        tr1 = r1 - participantR1Coeffs{:,1} ;
        tr2 = r2 - participantR2Coeffs{:,1} ;
        participantOutlierScores = (tr1 + tr2)/2;
+       outlier = find(participantOutlierScores==max(participantOutlierScores));
+       outlierParticipant = participantList(outlier,1);
+       %Remove participant from dataset
+       participantList(outlier,:)=[];
+       rows = stimuliScores.Participant == outlierParticipant
+       stimuliScores(rows,:) = [];
+       rows = HRScores.Participant == outlierParticipant
+       HRScores(rows,:) = [];
+       disp(['Removed P',outlierParticipant,' as an outlier']);
     else
         outlierFlag=false;
     end
+    %XXXShishir Debug Info - remove
     outlierFlag = false;
 end
 

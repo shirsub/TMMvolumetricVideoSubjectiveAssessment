@@ -20,21 +20,10 @@ writetable(T2_new,'./Data/T2_final.csv');
 %Check distribution of scores
 T1 = readtable('./Data/T1_final.csv');
 T2 = readtable('./Data/T2_final.csv');
-%T1
-x = T1.Scores;
-[H, pValue, W] = swtest(x);
-if (H)
-    fprintf('T1 Shapiro Wilk Test Outcome True: W = %f , pvalue = %f\n',W,pValue);
-else
-    fprintf('T1 Shapiro Wilk Test Outcome False: W = %f , pvalue = %f\n',W,pValue);
-end;
 
-%T2
-x = T2.Scores;
+x = table2array(T1.Scores);
 [H, pValue, W] = swtest(x);
-if (H)
-    fprintf('T2 Shapiro Wilk Test Outcome True: W = %f , pvalue = %f\n',W,pValue);
-else
-    fprintf('T2 Shapiro Wilk Test Outcome False: W = %f , pvalue = %f\n',W,pValue);
-end;
+fprintf('T1 Shapiro Wilk Test \n',n);
+
+
 

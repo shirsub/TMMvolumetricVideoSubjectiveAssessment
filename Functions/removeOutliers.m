@@ -1,25 +1,20 @@
-%Script to remove outliers based on ITU P.913 Annex A
+%Function to remove outliers based on ITU P.913 Annex A
 %https://www.itu.int/rec/T-REC-P.913-201603-I/en 
-%Read Data
-clear;
-clc;
-r1 = 0.75;
-r2 = 0.8;
-T1 = readtable('T1.csv');
-T2 = readtable('T2.csv');
+function[Tout,removedParticipants,n] = removeOutliers(Tin,r1,r2)
+
 %XXXShishir Debug test to match old results - ToDo Remove
-%rows = T1.DoF == 3;
-%T1(rows,:) = [];
+%rows = Tin.DoF == 3;
+%Tin(rows,:) = [];
 %Outlier Treatment T1
-rawData = T1;
-participantList = unique(rawData.Participant);
+participantList = unique(Tin.Participant);
 participantList = sortrows(participantList,1);
-%Get stimuli scores table
-rows = rawData.Codecs > 1;
-stimuliScores = rawData(rows,:);
-%Get hidden reference scores
-rows = rawData.Codecs == 1;
-HRScores = rawData(rows,:);
+%Get PVS scores table
+Tpvs = Tin;
+Tout = Tin;
+n = 0;
+removedParticipants = [];
+%Get HRC scores table
+Thrc = varfun(@mean,Tin,'InputVariables','Scores','GroupingVariables',{'Participant','DoF','Codecs','Bitrates'});
 outlierFlag = true;
 %Compute correlation per participant and log outliers
 while(outlierFlag)
@@ -28,30 +23,28 @@ while(outlierFlag)
     %Compute R1 and R2 coefficients for every participant
     for participant = 1:size(participantList)
         %R1 computation
-        rows = stimuliScores.Participant == participantList(participant);
-        x = stimuliScores(rows,:);
-        rows = stimuliScores.Participant ~= participantList(participant);
-        y_t = stimuliScores(rows,:);
+        rows = Tpvs.Participant == participantList(participant);
+        x = Tpvs(rows,:);
+        rows = Tpvs.Participant ~= participantList(participant);
+        y_t = Tpvs(rows,:);
+        %XXXShishir To Check: Averaged over DoFs - is this correct?
         y = varfun(@mean,y_t,'InputVariables','Scores','GroupingVariables',{'Contents','Codecs','Bitrates'});
         x = sortrows(x,{'Participant','Contents','Codecs','Bitrates'});
         y = sortrows(y,{'Contents','Codecs','Bitrates'});
         r1_coeff=corrcoef(x.Scores,y.mean_Scores);
         participantR1Coeffs{participant,1}=r1_coeff(1,2);
         %R2 Computation
-        rows = HRScores.Participant == participantList(participant);
-        x = HRScores(rows,:);
-        rows = HRScores.Participant ~= participantList(participant);
-        y_t = HRScores(rows,:);
-        y = varfun(@mean,y_t,'InputVariables','Scores','GroupingVariables',{'Contents','Codecs','Bitrates'});
-        x = sortrows(x,{'Participant','Contents','Codecs','Bitrates'});
-        y = sortrows(y,{'Contents','Codecs','Bitrates'});
+        rows = Thrc.Participant == participantList(participant);
+        x = Thrc(rows,:);
+        rows = Thrc.Participant ~= participantList(participant);
+        y_t = Thrc(rows,:);
+        y = varfun(@mean,y_t,'InputVariables','mean_Scores','GroupingVariables',{'Codecs','Bitrates'});
+        x = sortrows(x,{'Participant','Codecs','Bitrates'});
+        y = sortrows(y,{'Codecs','Bitrates'});
         r2_coeff=corrcoef(x.Scores,y.mean_Scores);
         %XXX_Shishir Debug Info
         if isnan(r2_coeff(1,2))
-            test = r2_coeff;
-            test2 = x.Scores;
-            test3 = y.mean_Scores;
-            %disp('FoundNan');
+            disp('Error: FoundNan in HRC correl values');
         end
         participantR2Coeffs{participant,1}=r2_coeff(1,2);
     end
@@ -73,11 +66,15 @@ while(outlierFlag)
            outlierParticipant = participantList(outlier,1);
            %Remove participant from dataset
            participantList(outlier,:)=[];
-           rows = stimuliScores.Participant == outlierParticipant;
-           stimuliScores(rows,:) = [];
-           rows = HRScores.Participant == outlierParticipant;
-           HRScores(rows,:) = [];
+           rows = Tpvs.Participant == outlierParticipant;
+           Tpvs(rows,:) = [];
+           rows = Thrc.Participant == outlierParticipant;
+           Thrc(rows,:) = [];
+           rows = Tout.Participant == outlierParticipant;
+           Tout(rows,:)= [];
            fprintf('Removed P%d as an outlier\n',outlierParticipant);
+           n = n + 1;
+           removedParticipants = [removedParticipants , outlierParticipant];
        end
     else
         outlierFlag=false;

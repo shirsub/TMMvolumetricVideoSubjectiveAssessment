@@ -17,7 +17,7 @@ writetable(T1_new,'./Data/T1_final.csv');
 fprintf('Removed %d participants from T2\n',n);
 writetable(T2_new,'./Data/T2_final.csv');
 
-%Check distribution of scores
+%Check distribution of scores using shapiro wilk test from https://nl.mathworks.com/matlabcentral/fileexchange/13964-shapiro-wilk-and-shapiro-francia-normality-tests
 T1 = readtable('./Data/T1_final.csv');
 T2 = readtable('./Data/T2_final.csv');
 %T1

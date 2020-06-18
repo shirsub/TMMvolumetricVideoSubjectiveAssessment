@@ -12,7 +12,7 @@ T2 = readtable('./Data/T2.csv');
 fprintf('Removed %d participants from T1\n',n);
 writetable(T1_new,'./Data/T1_final.csv');
 
-%Remove outlier T2
+%Remove outliers T2
 [T2_new, removedParticipants, n] = removeOutliers(T2,r1,r2);
 fprintf('Removed %d participants from T2\n',n);
 writetable(T2_new,'./Data/T2_final.csv');

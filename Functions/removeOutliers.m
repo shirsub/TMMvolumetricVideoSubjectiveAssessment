@@ -41,7 +41,7 @@ while(outlierFlag)
         y = varfun(@mean,y_t,'InputVariables','mean_Scores','GroupingVariables',{'Codecs','Bitrates'});
         x = sortrows(x,{'Participant','Codecs','Bitrates'});
         y = sortrows(y,{'Codecs','Bitrates'});
-        r2_coeff=corrcoef(x.Scores,y.mean_Scores);
+        r2_coeff=corrcoef(x.mean_Scores,y.mean_mean_Scores);
         %XXX_Shishir Debug Info
         if isnan(r2_coeff(1,2))
             disp('Error: FoundNan in HRC correl values');

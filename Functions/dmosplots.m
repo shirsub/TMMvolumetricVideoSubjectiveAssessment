@@ -1,5 +1,7 @@
-%Script to plot MOS and DMOS based on ITU P.913 https://www.itu.int/rec/T-REC-P.913-201603-I/en
-%XXXShishir ToDo: modify tio function, fix chart options
+%Script to plot MOS and DMOS based on ITU P.913
+%https://www.itu.int/rec/T-REC-P.913-201603-I/en with 95% confidence
+%intervals
+%XXXShishir ToDo: modify to function, fix chart options
 %Read Data
 clear;
 clc;

@@ -27,7 +27,7 @@ while(outlierFlag)
         x = Tpvs(rows,:);
         rows = Tpvs.Participant ~= participantList(participant);
         y_t = Tpvs(rows,:);
-        %XXXShishir To Check: Averaged over DoFs - is this correct?
+        %XXXShishir ToDo: Averaged over DoFs - is this correct?
         y = varfun(@mean,y_t,'InputVariables','Scores','GroupingVariables',{'Contents','Codecs','Bitrates'});
         x = sortrows(x,{'Participant','Contents','Codecs','Bitrates'});
         y = sortrows(y,{'Contents','Codecs','Bitrates'});

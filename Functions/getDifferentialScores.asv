@@ -1,12 +1,5 @@
-%Script to plot MOS and DMOS based on ITU P.913 https://www.itu.int/rec/T-REC-P.913-201603-I/en
-%XXXShishir ToDo: modify tio function, fix chart options
-%Read Data
-clear;
-clc;
-%XXXShishir ToDo replace with csv after outlier removal
-T1 = readtable('./Data/T1_final.csv');
-T2 = readtable('./Data/T2_final.csv');
-%Outlier Treatment T1
+function[Tout] = getDifferentialScores(Tin)
+Tout = [];
 rawData = T1;
 rows = rawData.Codecs==1;
 HRScores = rawData(rows,:);
@@ -23,6 +16,3 @@ CombinedScores.Properties.VariableNames([2 4 5 6 7]) = {'DoF' 'Codecs' 'Bitrates
 %mosStimuli = varfun(@mean,CombinedScores,'InputVariables','Scores_stimuliScores','GroupingVariables',{'Contents','Codecs','Bitrates'});
 %mosHR = varfun(@mean,CombinedScores,'InputVariables','Scores_HRScores','GroupingVariables',{'Contents','Codecs','Bitrates'});
 %dmosStimuli = varfun)@mean,'InputVariables',
-
-
-

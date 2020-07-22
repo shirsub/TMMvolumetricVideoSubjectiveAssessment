@@ -1,0 +1,30 @@
+function makePlot(Tin,DoF,Content,dataset)
+    rows = Tin.DoF == DoF & Tin.Content == Content;
+    T = Tin(rows,:);
+    rows = T.Codec == 1;
+    TContent = sortrows(T(rows,:),'Rate');
+    X = TContent.Rate;
+    Y = TContent.DMOS;
+    CI = abs(TContent.CIHigh - TContent.CILow)/2;
+    errorbar(X,Y,CI,'Color','green');
+    %legend('V-PCC');
+    hold on;
+    Y = TContent.HRScore;
+    CI = abs(TContent.HRCIHigh - TContent.HRCILow)/2;
+    errorbar(X,Y,CI,'Color','magenta','LineStyle','--');
+    %legend('HR');
+    hold on;
+    rows = T.Codec == 2;
+    TContent = sortrows(T(rows,:),'Rate');
+    Y = TContent.DMOS;
+    CI = abs(TContent.CIHigh - TContent.CILow)/2;
+    errorbar(X,Y,CI,'Color','blue');
+    legend('V-PCC','HR','CWI-PCC');
+    title("DoF " + DoF + " Content " + Content);
+    xlabel('RatePoint');
+    ylabel('Opinion Score');
+    hold off;
+    ax = gca;
+    %exportgraphics(ax,'Charts/test1234.jpg');
+    exportgraphics(ax,"Charts/T"+dataset+"DoF"+DoF+"Content"+Content+".jpg");
+end

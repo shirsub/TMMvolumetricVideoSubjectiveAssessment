@@ -49,5 +49,13 @@ T2_plotdata = dmosplots(T2_new,0.95,true);
 writetable(T1_plotdata,'./Data/T1_DMOS_PlotData.csv');
 writetable(T2_plotdata,'./Data/T2_DMOS_plotData.csv');
 
-
+%Make plots T1
+Contents = unique(T1_plotdata.Content);
+DoFs = unique(T1_plotdata.DoF);
+for dof = 1:size(DoFs)
+    for content = 1:size(Contents)
+        makePlot(T1_plotdata,DoFs(dof),Contents(content),1);
+        makePlot(T2_plotdata,DoFs(dof),Contents(content),2);
+    end
+end
 

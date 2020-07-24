@@ -20,11 +20,13 @@ function makePlot(Tin,DoF,Content,dataset)
     CI = abs(TContent.CIHigh - TContent.CILow)/2;
     errorbar(X,Y,CI,'Color','blue');
     legend('V-PCC','HR','CWI-PCC');
-    title("DoF " + DoF + " Content " + Content);
+    title("T" + dataset + " DoF " + DoF + " Content " + Content);
     xlabel('RatePoint');
     ylabel('Opinion Score');
     xlim([0.5 4.5]);
     ylim([1 6]);
+    xticks([1 2 3 4]);
+    legend('Location','southeast');
     hold off;
     ax = gca;
     %exportgraphics(ax,'Charts/test1234.jpg');

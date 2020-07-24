@@ -23,8 +23,11 @@ function makePlot(Tin,DoF,Content,dataset)
     title("DoF " + DoF + " Content " + Content);
     xlabel('RatePoint');
     ylabel('Opinion Score');
+    xlim([0.5 4.5]);
+    ylim([1 6]);
     hold off;
     ax = gca;
     %exportgraphics(ax,'Charts/test1234.jpg');
-    exportgraphics(ax,"Charts/T"+dataset+"DoF"+DoF+"Content"+Content+".jpg");
+    %exportgraphics(ax,"Charts/T"+dataset+"DoF"+DoF+"Content"+Content+".jpg");
+    saveas(ax,"Charts/T"+dataset+"DoF"+DoF+"Content"+Content+".jpg");
 end

@@ -13,16 +13,11 @@ T2 = readtable('./Data/T2_preprocessed.csv');
 %5. Homogeneity of covariates ??
 %Not all conditions are satisfied so we use non parametric tests
 a = 0.05;
-%Friedman rank test
-%Convert scores to ranks in rows, put the variable being considered acros
-%columns, the test result indicates if the columns are different
-%Things to test: Codec, bitrate, DoF, Content
-Tin = T1;
-Codecs = unique(Tin.Codecs);
-Rates = unique(Tin.Bitrates);
-Contents = unique(Tin.Contents);
-DoFs = unique(Tin.DoF);
 
-%Codecs
-%T = rows2vars(Tin,'VariableNamesSource','Codecs','DataVariables','DMOS');
-for 
+%First test Dofs as they are unmatched we use kruskal wallis 
+dofs = table2array(T1(:,{'DoF'}));
+scores = table2array(T1(:,{'DMOS'}));
+[p, res, stats] = kruskalwallis(scores,dofs);
+
+
+

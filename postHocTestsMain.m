@@ -19,5 +19,9 @@ dofs = table2array(T1(:,{'DoF'}));
 scores = table2array(T1(:,{'DMOS'}));
 [p, res, stats] = kruskalwallis(scores,dofs);
 
+dofs = table2array(T2(:,{'DoF'}));
+scores = table2array(T2(:,{'DMOS'}));
+[p, res, stats] = kruskalwallis(scores,dofs);
+
 
 

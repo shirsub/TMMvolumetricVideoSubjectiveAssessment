@@ -43,6 +43,9 @@ T2_new = getDifferentialScores(T2_new);
 writetable(T1_new,'./Data/T1_preprocessed.csv');
 writetable(T2_new,'./Data/T2_preprocessed.csv');
 
+%XXXShishir Test: Remove DoFs for validation plots
+%T1_new{:,2} = 4;
+%T2_new{:,2} = 4;
 %Get DMOS plot data
 T1_plotdata = dmosplots(T1_new,0.95,true);
 T2_plotdata = dmosplots(T2_new,0.95,true);

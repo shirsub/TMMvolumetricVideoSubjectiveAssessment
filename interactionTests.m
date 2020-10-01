@@ -5,6 +5,22 @@ addpath('./Functions');
 T1 = readtable('./Data/T1_preprocessed.csv');
 T2 = readtable('./Data/T2_preprocessed.csv');
 
+%XXXShishir Raw Anova Test - DO NOT USE - WE ARE VIOLATING THE ASSUMPTION
+%OF NORMALITY
+T1_test = table2array(T1);
+T2_test = table2array(T2);
+[pTESTt1, tableTESTt1, statsTESTt1] = anovan(T1_test(:,8),{T1_test(:,2),T1_test(:,3),T1_test(:,4),T1_test(:,5)},'model','interaction','varnames',{'DoF','Content','Codec','Bitrate'});
+[pTESTt2, tableTESTt2, statsTESTt2] = anovan(T2_test(:,8),{T2_test(:,2),T2_test(:,3),T2_test(:,4),T2_test(:,5)},'model','interaction','varnames',{'DoF','Content','Codec','Bitrate'});
+
+%Content + codec
+multcompare(statsTESTt1,'Dimension',[2,3])
+multcompare(statsTESTt2,'Dimension',[2,3])
+%Codec + Bitrate
+multcompare(statsTESTt1,'Dimension',[3,4])
+multcompare(statsTESTt2,'Dimension',[3,4])
+
+T1
+[pbrcodecrest1, tablebrcodecrest1, statsbrcodecrest1] = anovan(res(:,3),{c1,c2},'model','interaction','varnames',{'c1','c2'});
 %Linear mixed effects model for T1 and T2
 lmet1 = fitlme(T1,'DMOS~Bitrates+(Bitrates|DoF)+(Bitrates|Contents)');
 lmet2 = fitlme(T2,'DMOS~Bitrates+(Bitrates|Codecs)+(Bitrates|Contents)');
@@ -30,14 +46,14 @@ res = ArtAnova(table2array(brdof));
 %[pbrdofrest1, tablebrdofrest1, statsbrdofrest1] = anova2(res);
 c1 = table2array(brdof(:,1));
 c2 = table2array(brdof(:,2));
-[pbrdofrest1, tablebrdofrest1, statsbrdofrest1] = anovan(res(:,3),{c1,c2});
+[pbrdofrest1, tablebrdofrest1, statsbrdofrest1] = anovan(res(:,3),{c1,c2},'model','interaction','varnames',{'c1','c2'});
 
 %Bitrate vs codec
 brcodec = T1(:,{'Bitrates','Codecs','DMOS'});
 res = ArtAnova(table2array(brcodec));
 c1 = table2array(brcodec(:,1));
 c2 = table2array(brcodec(:,2));
-[pbrcodecrest1, tablebrcodecrest1, statsbrcodecrest1] = anovan(res(:,3),{c1,c2});
+[pbrcodecrest1, tablebrcodecrest1, statsbrcodecrest1] = anovan(res(:,3),{c1,c2},'model','interaction','varnames',{'c1','c2'});
 
 %Bitrate vs content
 brcontent = T1(:,{'Bitrates','Contents','DMOS'});
@@ -45,7 +61,7 @@ res = ArtAnova(table2array(brcontent));
 %[pbrcontentrest1,tablebrcontentrest1,statsbrcontentrest1] = anova2(res);
 c1 = table2array(brcontent(:,1));
 c2 = table2array(brcontent(:,2));
-[pbrcontentrest1, tablebrcontentrest1, statsbrcontentrest1] = anovan(res(:,3),{c1,c2});
+[pbrcontentrest1, tablebrcontentrest1, statsbrcontentrest1] = anovan(res(:,3),{c1,c2},'model','interaction','varnames',{'c1','c2'});
 
 %Content vs codec
 contentcodec = T1(:,{'Contents','Codecs','DMOS'});
@@ -53,14 +69,14 @@ res = ArtAnova(table2array(contentcodec));
 %[pcontentcodecrest1, tablecontentcodecrest1,statscontentcodecrest1] = anova2(res);
 c1 = table2array(contentcodec(:,1));
 c2 = table2array(contentcodec(:,2));
-[pcontentcodecrest1, tablecontentcodecrest1,statscontentcodecrest1] = anovan(res(:,3),{c1,c2});
+[pcontentcodecrest1, tablecontentcodecrest1,statscontentcodecrest1] = anovan(res(:,3),{c1,c2},'model','interaction','varnames',{'c1','c2'});
 
 %Content vs DoF
 contentdof = T1(:,{'Contents','DoF','DMOS'});
 res = ArtAnova(table2array(contentdof));
 c1 = table2array(contentdof(:,1));
 c2 = table2array(contentdof(:,2));
-[pcontentdofrest1,tablecontentdofrest1,statscontentdofrest1] = anovan(res(:,3),{c1,c2});
+[pcontentdofrest1,tablecontentdofrest1,statscontentdofrest1] = anovan(res(:,3),{c1,c2},'model','interaction','varnames',{'c1','c2'});
 
 
 %codec vs DoF
@@ -68,7 +84,7 @@ codecdof = T1(:,{'Codecs','DoF','DMOS'});
 res = ArtAnova(table2array(codecdof));
 c1 = table2array(codecdof(:,1));
 c2 = table2array(codecdof(:,2));
-[pcodecdofrest1,tablecodecdofrest1,statscodecdofrest1] = anovan(res(:,3),{c1,c2})
+[pcodecdofrest1,tablecodecdofrest1,statscodecdofrest1] = anovan(res(:,3),{c1,c2},'model','interaction','varnames',{'c1','c2'});
 
 
 
@@ -81,14 +97,14 @@ res = ArtAnova(table2array(brdof));
 %[pbrdofrest1, tablebrdofrest1, statsbrdofrest1] = anova2(res);
 c1 = table2array(brdof(:,1));
 c2 = table2array(brdof(:,2));
-[pbrdofrest2, tablebrdofrest2, statsbrdofrest2] = anovan(res(:,3),{c1,c2});
+[pbrdofrest2, tablebrdofrest2, statsbrdofrest2] = anovan(res(:,3),{c1,c2},'model','interaction','varnames',{'c1','c2'});
 
 %Bitrate vs codec
 brcodec = T2(:,{'Bitrates','Codecs','DMOS'});
 res = ArtAnova(table2array(brcodec));
 c1 = table2array(brcodec(:,1));
 c2 = table2array(brcodec(:,2));
-[pbrcodecrest2, tablebrcodecrest2, statsbrcodecrest2] = anovan(res(:,3),{c1,c2});
+[pbrcodecrest2, tablebrcodecrest2, statsbrcodecrest2] = anovan(res(:,3),{c1,c2},'model','interaction','varnames',{'c1','c2'});
 
 %Bitrate vs content
 brcontent = T2(:,{'Bitrates','Contents','DMOS'});
@@ -96,7 +112,7 @@ res = ArtAnova(table2array(brcontent));
 %[pbrcontentrest1,tablebrcontentrest1,statsbrcontentrest1] = anova2(res);
 c1 = table2array(brcontent(:,1));
 c2 = table2array(brcontent(:,2));
-[pbrcontentrest2, tablebrcontentrest2, statsbrcontentrest2] = anovan(res(:,3),{c1,c2});
+[pbrcontentrest2, tablebrcontentrest2, statsbrcontentrest2] = anovan(res(:,3),{c1,c2},'model','interaction','varnames',{'c1','c2'});
 
 %Content vs codec
 contentcodec = T2(:,{'Contents','Codecs','DMOS'});
@@ -104,14 +120,14 @@ res = ArtAnova(table2array(contentcodec));
 %[pcontentcodecrest1, tablecontentcodecrest1,statscontentcodecrest1] = anova2(res);
 c1 = table2array(contentcodec(:,1));
 c2 = table2array(contentcodec(:,2));
-[pcontentcodecrest2, tablecontentcodecrest2,statscontentcodecrest2] = anovan(res(:,3),{c1,c2});
+[pcontentcodecrest2, tablecontentcodecrest2,statscontentcodecrest2] = anovan(res(:,3),{c1,c2},'model','interaction','varnames',{'c1','c2'});
 
 %Content vs DoF
 contentdof = T2(:,{'Contents','DoF','DMOS'});
 res = ArtAnova(table2array(contentdof));
 c1 = table2array(contentdof(:,1));
 c2 = table2array(contentdof(:,2));
-[pcontentdofrest2,tablecontentdofrest2,statscontentdofrest2] = anovan(res(:,3),{c1,c2});
+[pcontentdofrest2,tablecontentdofrest2,statscontentdofrest2] = anovan(res(:,3),{c1,c2},'model','interaction','varnames',{'c1','c2'});
 
 
 %codec vs DoF
@@ -119,4 +135,7 @@ codecdof = T2(:,{'Codecs','DoF','DMOS'});
 res = ArtAnova(table2array(codecdof));
 c1 = table2array(codecdof(:,1));
 c2 = table2array(codecdof(:,2));
-[pcodecdofrest2,tablecodecdofrest2,statscodecdofrest2] = anovan(res(:,3),{c1,c2})
+[pcodecdofrest2,tablecodecdofrest2,statscodecdofrest2] = anovan(res(:,3),{c1,c2},'model','interaction','varnames',{'c1','c2'});
+
+
+%Use Multcompare to check 

@@ -1,5 +1,6 @@
 function makePlot(Tin,DoF,Content,dataset)
     rows = Tin.DoF == DoF & Tin.Content == Content;
+    %rows =  Tin.Content == Content;
     T = Tin(rows,:);
     rows = T.Codec == 1;
     TContent = sortrows(T(rows,:),'Rate');

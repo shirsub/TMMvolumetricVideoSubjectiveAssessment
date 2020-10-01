@@ -23,7 +23,15 @@ dofs = table2array(T2(:,{'DoF'}));
 scores = table2array(T2(:,{'DMOS'}));
 [p, res, stats] = kruskalwallis(scores,dofs);
 
-%
+%Friedman test to check if any groups are significantly different
+var = 'Contents';
+groupvar = table2array(T1(:,{var}));
+scores = table2array(T1(:,{'DMOS'}));
+testtable = unstack(
+
+%Wilcoxon signed rank test for pairwise comparison among groups
+
+
 
 
 

@@ -1,5 +1,7 @@
 %Function to remove outliers based on ITU P.913 Annex A
 %https://www.itu.int/rec/T-REC-P.913-201603-I/en 
+%PVS - Processed Video Sequence - Degraded video sequences
+%HRC - Hypothetical Reference Circuit - Fixed combination of encoder + bitrate + netwrok condition+ decoder
 function[Tout,removedParticipants,n] = removeOutliers(Tin,r1,r2)
 
 %XXXShishir Debug test to match old results - ToDo Remove

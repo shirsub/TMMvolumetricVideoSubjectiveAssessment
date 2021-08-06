@@ -1,8 +1,8 @@
 clear;
 clc;
 %Read data
-T1 = readtable('./Data/T1_preprocessed.csv');
-T2 = readtable('./Data/T2_preprocessed.csv');
+T1 = readtable('./Data/T4_preprocessed.csv');
+%T2 = readtable('./Data/T2_preprocessed.csv');
 
 %We use non-parametric tests because the score data is ordinal and the model structure is not specified a priori but we try to determine it from the data. 
 %Assumptions for ANOVA:
@@ -27,7 +27,7 @@ scores = table2array(T2(:,{'DMOS'}));
 var = 'Contents';
 groupvar = table2array(T1(:,{var}));
 scores = table2array(T1(:,{'DMOS'}));
-testtable = unstack(
+
 
 %Wilcoxon signed rank test for pairwise comparison among groups
 

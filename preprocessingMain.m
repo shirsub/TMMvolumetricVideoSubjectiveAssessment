@@ -62,3 +62,6 @@ for dof = 1:size(DoFs)
     end
 end
 
+%Repeat Process for T3
+
+

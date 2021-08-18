@@ -205,3 +205,46 @@ hold on;
 xlabel('Participants');
 ylabel('Ratio of Frames Viewed on the Move');
 hold off;
+
+
+%%Box plot of file size and read times of the cwipc dump format vs standard
+%%PLY files
+Treadtimes = readtable('./Data/readtimes.csv');
+x = Treadtimes.readtime;
+%x = Treadtimes.filesizeMB;
+g = Treadtimes.format;
+boxplot(x,g);
+hold on;
+xlabel('Point cloud storage format');
+ylabel('Readtimes in ms');
+hold off;
+
+
+Treadtimes = readtable('./Data/readtimes.csv');
+%x = Treadtimes.readtime;
+x = Treadtimes.filesizeMB;
+%Treadtimes.filesizeMB = reorderlevels(Treadtimes.filesizeMB,{'SerializedBinary','PLY Binary (Open3D)','PLY ASCII (Open3D)'});
+g = Treadtimes.format;
+%boxplot(x,g);
+boxplot(x,g,'GroupOrder',{'SerializedBinary','PLY Binary (Open3D)','PLY ASCII (Open3D)'},'Labels',{'Serialized Binary','PLY Binary','PLY ASCII'});
+hold on;
+xlabel('Point cloud storage format');
+ylabel('File size in MB');
+hold off;
+
+
+%Box plot of readtimes for the 4 sequences in the dataset, the box plot of
+%readtimes by format didn't make sense they were too far to see the
+%variation (PLY ascii is 10 times slower)
+Treadtimes = readtable('./Data/readtimesReference.csv');
+x = Treadtimes.readtime;
+%Treadtimes.filesizeMB = reorderlevels(Treadtimes.filesizeMB,{'SerializedBinary','PLY Binary (Open3D)','PLY ASCII (Open3D)'});
+g = Treadtimes.Dataset;
+%boxplot(x,g);
+%boxplot(x,g,'GroupOrder',{'SerializedBinary','PLY Binary (Open3D)','PLY ASCII (Open3D)'},'Labels',{'Serialized Binary','PLY Binary','PLY ASCII'});
+boxplot(x,g);
+hold on;
+xlabel('Point cloud sequence');
+ylabel('Read time in ms');
+hold off;
+

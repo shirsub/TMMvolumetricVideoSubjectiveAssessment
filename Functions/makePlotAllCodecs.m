@@ -1,4 +1,4 @@
-function makePlotAllCodecs(Tin,DoF,Content,dataset)
+function makePlotAllCodecs(Tin,DoF,Content,dataset,lwidth)
     rows = Tin.DoF == DoF & Tin.Content == Content;
     %rows =  Tin.Content == Content;
     T = Tin(rows,:);
@@ -7,7 +7,7 @@ function makePlotAllCodecs(Tin,DoF,Content,dataset)
     X = TContent.Rate;
     Y = TContent.DMOS;
     CI = abs(TContent.CIHigh - TContent.CILow)/2;
-    errorbar(X,Y,CI,'Color','green');
+    errorbar(X,Y,CI,'Color','green','LineStyle','--','Linewidth',lwidth);
     %legend('V-PCC');
     hold on;
     Y = TContent.HRScore;
@@ -17,9 +17,10 @@ function makePlotAllCodecs(Tin,DoF,Content,dataset)
     hold on;
     rows = T.Codec == 2;
     TContent = sortrows(T(rows,:),'Rate');
+    X = TContent.Rate;
     Y = TContent.DMOS;
     CI = abs(TContent.CIHigh - TContent.CILow)/2;
-    errorbar(X,Y,CI,'Color','blue');
+    errorbar(X,Y,CI,'Color','blue','Linewidth',lwidth);
     hold on;
     %Add other codecs + tiling approaches
     rows = T.Codec == 3;
@@ -27,14 +28,14 @@ function makePlotAllCodecs(Tin,DoF,Content,dataset)
     X = TContent.Rate;
     Y = TContent.DMOS;
     CI = abs(TContent.CIHigh - TContent.CILow)/2;
-    errorbar(X,Y,CI,'Color','red');
+    errorbar(X,Y,CI,'Color','red','Linewidth',lwidth);
     
     rows = T.Codec == 4;
     TContent = sortrows(T(rows,:),'Rate');
     X = TContent.Rate;
     Y = TContent.DMOS;
     CI = abs(TContent.CIHigh - TContent.CILow)/2;
-    errorbar(X,Y,CI,'Color','cyan');
+    errorbar(X,Y,CI,'Color','#964B00','Linewidth',lwidth);
     
     
     rows = T.Codec == 5;
@@ -42,7 +43,8 @@ function makePlotAllCodecs(Tin,DoF,Content,dataset)
     X = TContent.Rate;
     Y = TContent.DMOS;
     CI = abs(TContent.CIHigh - TContent.CILow)/2;
-    errorbar(X,Y,CI,'Color','yellow');
+    %errorbar(X,Y,CI,'Color','yellow');
+    errorbar(X,Y,CI,'Color','cyan','Linewidth',lwidth);
     
     
     rows = T.Codec == 6;
@@ -50,23 +52,22 @@ function makePlotAllCodecs(Tin,DoF,Content,dataset)
     X = TContent.Rate;
     Y = TContent.DMOS;
     CI = abs(TContent.CIHigh - TContent.CILow)/2;
-    errorbar(X,Y,CI,'Color','black');
+    errorbar(X,Y,CI,'Color','black','Linewidth',lwidth);
     
     rows = T.Codec == 7;
     TContent = sortrows(T(rows,:),'Rate');
     X = TContent.Rate;
     Y = TContent.DMOS;
     CI = abs(TContent.CIHigh - TContent.CILow)/2;
-    errorbar(X,Y,CI,'Color','magenta');
+    errorbar(X,Y,CI,'Color','magenta','Linewidth',lwidth);
     %End of individual codec part 
-    
-    legend('V-PCC','HR','CWI-PCC','Greedy','Hybrid','Uniform','GreedyPrime','WeightedHybrid');
-    title("T" + dataset + " DoF " + DoF + " Content " + Content);
-    xlabel('RatePoint');
+    legend('V-PCC:Naive','Uncompressed-Original','Anchor:Naive','Anchor:Adaptive-Greedy','Anchor:Adaptive-Hybrid','Anchor:Adaptive-Uniform','Anchor:Adaptive-TopThree','Anchor:Adaptive-WHybrid');
+    %title("T" + dataset + " DoF " + DoF + " Content " + Content);
+    xlabel('Bandwidth in Mbit/sec');
     ylabel('Mean Opinion Score');
-    xlim([0.5 4.5]);
+    xlim([0 inf]);
     ylim([1 6]);
-    xticks([1 2 3 4]);
+    %xticks([1 2 3 4]);
     legend('Location','southeast');
     hold off;
     ax = gca;

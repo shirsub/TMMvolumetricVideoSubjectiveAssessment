@@ -248,3 +248,63 @@ xlabel('Point cloud sequence');
 ylabel('Read time in ms');
 hold off;
 
+
+%SSQ Data
+Tssq = readtable('./Data/ssq.csv');
+%x = Tssq.GeneralDiscomfort;
+%g = Tssq.SSQNumber;
+%boxplot(x,g);
+ssqs = unique(Tssq.SSQNumber);
+rows = Tssq.SSQNumber == ssqs(1);
+ssqGD = Tssq.GeneralDiscomfort(rows,:);
+ssqFatigue = Tssq.Fatigue(rows,:);
+ssqEyeStrain = Tssq.EyeStrain(rows,:);
+for r = 2:size(ssqs)
+    rows = Tssq.SSQNumber == ssqs(r);
+    GD = Tssq.GeneralDiscomfort(rows,:);
+    Fatigue = Tssq.Fatigue(rows,:);
+    EyeStrain = Tssq.EyeStrain(rows,:);
+    ssqGD = [ssqGD GD];
+    ssqFatigue = [ssqFatigue Fatigue];
+    ssqEyeStrain = [ssqEyeStrain EyeStrain];
+end
+[p, tbl, stats] = friedman(ssqGD);
+[p, tbl, stats] = friedman(ssqEyeStrain);
+[p, tbl, stats] = friedman(ssqFatigue);
+%%Fatigue looks good, p > 0.05, no statistically significant differences in
+%%the level of fatigue between the three SSQ questionnaires that each
+%%participant filled up. 
+ssqGDPairwise = PairwiseWilcoxonSRTest(ssqGD,0.05);
+ssqEyeStrainPairwise = PairwiseWilcoxonSRTest(ssqEyeStrain,0.05);
+%%General Discomfort and EyeStrain look bad there are statistically
+%%significant differences between the three SSQs with large effect sizes
+
+
+%%SSQ with Total Sverity from the original Kennedy et al 1993
+Tssq = readtable('./Data/ssqts.csv');
+
+ssqs = unique(Tssq.SSQNumber);
+rows = Tssq.SSQNumber == ssqs(1);
+ssqGD = Tssq.GeneralDiscomfort(rows,:);
+ssqFatigue = Tssq.Fatigue(rows,:);
+ssqEyeStrain = Tssq.EyeStrain(rows,:);
+ssqTotalSeverity = Tssq.TotalSeverity(rows,:);
+for r = 2:size(ssqs)
+    rows = Tssq.SSQNumber == ssqs(r);
+    GD = Tssq.GeneralDiscomfort(rows,:);
+    Fatigue = Tssq.Fatigue(rows,:);
+    EyeStrain = Tssq.EyeStrain(rows,:);
+    TS = Tssq.TotalSeverity(rows,:);
+    ssqGD = [ssqGD GD];
+    ssqFatigue = [ssqFatigue Fatigue];
+    ssqEyeStrain = [ssqEyeStrain EyeStrain];
+    ssqTotalSeverity = [ssqTotalSeverity TS];
+end
+%[p, tbl, stats] = friedman(ssqGD);
+%[p, tbl, stats] = friedman(ssqEyeStrain);
+%[p, tbl, stats] = friedman(ssqFatigue);
+[p, tbl, stats] = friedman(ssqTotalSeverity);
+ssqTSPairwise = PairwiseWilcoxonSRTest(ssqTotalSeverity,0.05);
+
+ssqGDPairwise = PairwiseWilcoxonSRTest(ssqGD,0.05);
+ssqEyeStrainPairwise = PairwiseWilcoxonSRTest(ssqEyeStrain,0.05);

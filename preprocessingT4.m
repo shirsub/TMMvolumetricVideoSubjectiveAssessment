@@ -25,6 +25,7 @@ T4_plotdata = dmosplots(T4_new2,0.95,false);
 writetable(T4_plotdata,'./Data/T4_DMOS_PlotData.csv');
 
 %Make plots T1
+T4_plotdata = readtable('./Data/T4_DMOS_PlotData.csv');
 Contents = unique(T4_plotdata.Content);
 DoFs = unique(T4_plotdata.DoF);
 for dof = 1:size(DoFs)

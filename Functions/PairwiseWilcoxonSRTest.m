@@ -15,7 +15,8 @@ function[Tout] = PairwiseWilcoxonSRTest(Tin,a)
     Tout = cell2table(cell(0,7),'VariableNames', header);
     for i = 1:groups
         for j = i+1:groups
-           [p, h, stats] = signrank(Tin(:,i),Tin(:,j),'alpha',a); 
+           %[p, h, stats] = signrank(Tin(:,i),Tin(:,j),'alpha',a); 
+           [p, h, stats] = signrank(Tin(:,i),Tin(:,j),'alpha',a,'method','approximate'); 
            z = stats.zval;
            signedrank = stats.signedrank;
            %Each observation is a matched pair so we use obs*2 to calculate the
